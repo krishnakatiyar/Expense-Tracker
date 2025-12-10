@@ -90,7 +90,6 @@ class AI_Engine:
         iso_forest = IsolationForest(contamination=0.1, random_state=42)
         df['anomaly'] = iso_forest.fit_predict(X)
         
-        # Return anomalies (where anomaly == -1)
         anomalies = df[df['anomaly'] == -1]
         return anomalies
-
+        
