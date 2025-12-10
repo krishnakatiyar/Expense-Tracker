@@ -7,7 +7,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import IsolationForest
 import datetime
 
-# Seed data for initial training
 SEED_DATA = [
     ("coffee", "Food"),
     ("lunch", "Food"),
@@ -39,16 +38,13 @@ class AI_Engine:
         self._train_initial_model()
 
     def _train_initial_model(self):
-        """Train the model with seed data."""
         descriptions, categories = zip(*SEED_DATA)
         self.model.fit(descriptions, categories)
 
     def train(self, df):
-        """Retrain the model with data from database."""
         if len(df) < 5:
-            return  # Not enough data to retrain
+            return 
         
-        # Combine seed data with user data for better accuracy initially
         seed_df = pd.DataFrame(SEED_DATA, columns=['description', 'category'])
         combined_df = pd.concat([seed_df, df[['description', 'category']]])
         
@@ -57,7 +53,6 @@ class AI_Engine:
         self.model.fit(X, y)
 
     def predict_category(self, description):
-        """Predict category."""
         if not description:
             return "Uncategorized"
         try:
@@ -66,7 +61,6 @@ class AI_Engine:
             return "Uncategorized"
 
     def forecast_next_month(self, df):
-        """Simple linear regression forecast."""
         if df.empty:
             return 0.0
             
@@ -85,20 +79,18 @@ class AI_Engine:
         next_month_index = len(monthly_costs)
         prediction = reg.predict([[next_month_index]])[0]
         
-        return max(0, prediction) # No negative spending
+        return max(0, prediction) 
 
     def detect_anomalies(self, df):
-        """Detect anomalies in recent transactions."""
         if df.empty or len(df) < 5:
             return pd.DataFrame()
 
-        # Feature: Amount
         X = df[['amount']]
         
-        # Isolation Forest
         iso_forest = IsolationForest(contamination=0.1, random_state=42)
         df['anomaly'] = iso_forest.fit_predict(X)
         
         # Return anomalies (where anomaly == -1)
         anomalies = df[df['anomaly'] == -1]
         return anomalies
+
