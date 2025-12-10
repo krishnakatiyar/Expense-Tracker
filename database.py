@@ -5,7 +5,6 @@ from datetime import datetime
 DB_FILE = "expenses.db"
 
 def init_db():
-    """Initialize the database with the expenses table."""
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute('''
@@ -22,7 +21,6 @@ def init_db():
     conn.close()
 
 def add_expense(amount, description, category, payment_method, date):
-    """Add a new expense to the database."""
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute('''
@@ -33,14 +31,12 @@ def add_expense(amount, description, category, payment_method, date):
     conn.close()
 
 def get_expenses():
-    """Fetch all expenses from the database."""
     conn = sqlite3.connect(DB_FILE)
     df = pd.read_sql_query("SELECT * FROM expenses ORDER BY date DESC", conn)
     conn.close()
     return df
 
 def get_categories():
-    """Fetch unique categories."""
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute("SELECT DISTINCT category FROM expenses")
@@ -49,7 +45,6 @@ def get_categories():
     return categories
 
 def delete_expense(expense_id):
-    """Delete an expense by ID."""
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
