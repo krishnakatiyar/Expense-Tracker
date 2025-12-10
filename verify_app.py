@@ -18,12 +18,10 @@ def test_ai_engine():
     print("Testing AI Engine...")
     ai = AI_Engine()
     
-    # Test Prediction
     cat = ai.predict_category("McDonalds")
     print(f"Prediction for 'McDonalds': {cat}")
     assert isinstance(cat, str)
     
-    # Test Anomaly (Need dataframe)
     df = db.get_expenses()
     anomalies = ai.detect_anomalies(df)
     print("✅ AI Engine Tests Passed!")
@@ -31,3 +29,4 @@ def test_ai_engine():
 if __name__ == "__main__":
     test_database()
     test_ai_engine()
+
